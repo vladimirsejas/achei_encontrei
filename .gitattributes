@@ -1,0 +1,9 @@
+# Texto: sempre com fim de linha LF, igual em qualquer sistema
+* text=auto eol=lf
+
+# Binarios: o Git nunca deve alterar
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.zip binary

@@ -1,0 +1,29 @@
+# Segredos — NUNCA versionar
+.env
+*.env
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Bancos locais e dados de teste
+*.db
+*.sqlite3
+
+# Notebooks de pesquisa: checkpoints
+.ipynb_checkpoints/
+
+# Editores e sistema
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store
