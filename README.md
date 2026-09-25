@@ -101,8 +101,9 @@ de entrada comercial do projeto.
 |---|---|
 | Domínio definido (entidades, estados, eventos, regras jurídicas) | ✅ Concluído |
 | Revisão estratégica: começar pelo hub institucional | ✅ Concluído |
-| **Fase 0** — Conversar com instituições reais e encontrar um piloto | ⏳ Próximo passo |
-| **Fase 1** — Balcão institucional: registro, custódia, prazo legal, devolução, auditoria | ⏳ |
+| **Fase 1** — Balcão institucional: registro, custódia, prazo legal, devolução, auditoria, relatório | 🔨 Núcleo pronto (API + testes) |
+| **Fase 1** — Tela do balcão para demonstração | ⏳ Próximo passo |
+| **Fase 0** — Levar a demonstração a instituições reais e encontrar um piloto | ⏳ |
 | **Fase 2** — Ponte com o público: busca e formulário "Perdi" | ⏳ |
 | **Fase 3** — Inteligência: matching heurístico, depois IA | ⏳ |
 | **Fase 4** — Rede entre instituições | ⏳ |
@@ -120,6 +121,57 @@ de entrada comercial do projeto.
 
 ---
 
+## Estrutura
+
+```
+achei_encontrei/
+├── README.md · LICENSE · compose.yaml · .env.example
+├── docs/                         ← canônicos, histórico, decisões, oportunidades
+└── backend/
+    ├── pyproject.toml            ← dependências e configuração das ferramentas
+    ├── src/achei_encontrei/
+    │   ├── main.py               ← liga os módulos
+    │   ├── compartilhado/        ← configuração, banco, erros
+    │   ├── identidade/           ← Pessoa, Instituição, Operador
+    │   ├── itens/                ← Achado, Custódia, Transferência, prazo, relatório
+    │   ├── correspondencia/      ← Match (Fase 3)
+    │   ├── verificacao/          ← Devolução e contestação
+    │   └── auditoria/            ← Eventos
+    ├── migracoes/                ← histórico do banco (Alembic)
+    ├── tests/                    ← espelha o src/
+    └── scripts/popular_demo.py   ← cria um balcão de demonstração
+```
+
+Todo módulo tem a mesma forma: `dominio.py` (regras puras), `modelos.py` (tabelas),
+`esquemas.py` (entrada e saída da API), `servicos.py` (casos de uso), `rotas.py` (HTTP).
+
+---
+
 ## Como rodar
 
-Em construção. As instruções entram aqui junto com o primeiro código.
+Pré-requisito: [uv](https://docs.astral.sh/uv/) instalado. Ele instala o Python 3.12 sozinho.
+
+```powershell
+# 1. Configuração (na raiz do projeto)
+copy .env.example .env
+
+# 2. Dependências (dentro de backend/)
+cd backend
+uv sync
+
+# 3. Testes
+uv run pytest
+
+# 4. Criar as tabelas e o balcão de demonstração
+uv run alembic upgrade head
+uv run python scripts/popular_demo.py
+
+# 5. Subir a API
+uv run uvicorn achei_encontrei.main:app --reload
+```
+
+Abra **http://localhost:8000/docs** para ver e testar todas as rotas.
+
+O `.env.example` já vem no **modo rápido** (SQLite, sem Docker). Para usar
+PostgreSQL, troque a linha `DATABASE_URL` no `.env` e rode `docker compose up -d`
+na raiz antes do passo 4.

@@ -1,0 +1,17 @@
+# Sobe o PostgreSQL do projeto. Uso: docker compose up -d
+# As credenciais vêm do arquivo .env na raiz (copie do .env.example).
+services:
+  banco:
+    image: postgres:16
+    container_name: achei_encontrei_banco
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-achei}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-achei}
+      POSTGRES_DB: ${POSTGRES_DB:-achei_encontrei}
+    ports:
+      - "5432:5432"
+    volumes:
+      - dados_banco:/var/lib/postgresql/data
+
+volumes:
+  dados_banco:
