@@ -1,7 +1,10 @@
 """Monta a aplicação: liga os módulos e trata os erros de domínio num só lugar."""
 
+from pathlib import Path
+
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 
 from achei_encontrei.auditoria.rotas import rotas as rotas_auditoria
 from achei_encontrei.compartilhado.erros import ErroDominio
@@ -27,6 +30,16 @@ app.include_router(rotas_auditoria)
 @app.exception_handler(ErroDominio)
 async def _erro_dominio(_: Request, exc: ErroDominio):
     return JSONResponse(status_code=exc.status_http, content={"detail": str(exc)})
+
+
+# O painel do balcão: http://localhost:8000/painel/
+PASTA_PAINEL = Path(__file__).parent / "painel" / "estatico"
+app.mount("/painel", StaticFiles(directory=PASTA_PAINEL, html=True), name="painel")
+
+
+@app.get("/", include_in_schema=False)
+async def inicio():
+    return RedirectResponse("/painel/")
 
 
 @app.get("/saude", tags=["Infra"])

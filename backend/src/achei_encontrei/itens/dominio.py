@@ -72,9 +72,21 @@ TRANSICOES_ACHADO: dict[EstadoAchado, set[EstadoAchado]] = {
 }
 
 
+# Como cada estado é dito para quem está no balcão.
+ESTADO_EM_PALAVRAS: dict[EstadoAchado, str] = {
+    EstadoAchado.REGISTRADO: "registrado, ainda com quem encontrou",
+    EstadoAchado.EM_MATCH: "em análise de correspondência",
+    EstadoAchado.EM_CUSTODIA: "guardado no balcão",
+    EstadoAchado.ENCAMINHADO_AUTORIDADE: "já entregue à autoridade",
+    EstadoAchado.DEVOLVIDO: "já devolvido ao dono",
+}
+
+
 def validar_transicao(atual: EstadoAchado, novo: EstadoAchado) -> None:
     if novo not in TRANSICOES_ACHADO[atual]:
-        raise RegraViolada(f"O achado não pode passar de {atual} para {novo}.")
+        raise RegraViolada(
+            f"Não é possível fazer isso: este objeto está {ESTADO_EM_PALAVRAS[atual]}."
+        )
 
 
 class TipoResponsavel(StrEnum):

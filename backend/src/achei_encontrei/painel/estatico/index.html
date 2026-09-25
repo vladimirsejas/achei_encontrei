@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Balcão · Achei, Encontrei</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <header class="topo">
+    <div class="marca">
+      <span class="marca-nome">Achei, Encontrei</span>
+      <span class="marca-sub">Balcão de achados e perdidos</span>
+    </div>
+    <div class="instituicao">
+      <h2 id="nome-instituicao">Carregando…</h2>
+      <select id="escolha-instituicao" hidden aria-label="Instituição"></select>
+    </div>
+    <label class="operador">
+      Atendendo
+      <select id="escolha-operador" aria-label="Operador que está atendendo"></select>
+    </label>
+  </header>
+
+  <nav class="abas" aria-label="Seções do painel">
+    <button class="aba" data-aba="hoje" aria-current="page">Hoje no balcão</button>
+    <button class="aba" data-aba="registrar">Registrar objeto</button>
+    <button class="aba" data-aba="historico">Histórico</button>
+  </nav>
+
+  <main>
+    <!-- HOJE NO BALCÃO -->
+    <section id="hoje" class="secao">
+      <h1 class="manchete" id="manchete"></h1>
+      <p class="manchete-sub" id="manchete-sub"></p>
+
+      <div id="atencao" class="atencao"></div>
+
+      <div id="etiquetas" class="etiquetas"></div>
+
+      <dl class="numeros" id="numeros"></dl>
+    </section>
+
+    <!-- REGISTRAR OBJETO -->
+    <section id="registrar" class="secao" hidden>
+      <h1 class="titulo-secao">Registrar um objeto encontrado</h1>
+      <p class="explica">O prazo legal de 15 dias começa a contar da data em que o objeto foi encontrado.</p>
+
+      <form id="form-registrar" class="formulario">
+        <label>O que é o objeto
+          <input name="descricao" required minlength="5" maxlength="2000"
+                 placeholder="Ex.: celular preto com capinha">
+        </label>
+        <div class="linha">
+          <label>Tipo
+            <select name="categoria" id="campo-categoria" required></select>
+          </label>
+          <label>Quando foi encontrado
+            <input type="date" name="data_achado" id="campo-data" required>
+          </label>
+        </div>
+        <div class="linha">
+          <label>Onde foi encontrado
+            <input name="local_encontrado" required minlength="2" placeholder="Ex.: praça de alimentação">
+          </label>
+          <label>Onde vai ficar guardado
+            <input name="local_guarda" required minlength="2" value="Armário do balcão">
+          </label>
+        </div>
+        <label>Detalhes que só o dono saberia
+          <textarea name="sinais_privados" rows="3"
+            placeholder="Ex.: adesivo de gato atrás, papel de parede com foto de praia"></textarea>
+          <span class="dica">Nunca aparecem para o público. Servem para você conferir se quem veio buscar é mesmo o dono.</span>
+        </label>
+        <label class="marcar">
+          <input type="checkbox" name="achadego_informado">
+          Avisei quem encontrou que ele tem direito a uma recompensa de pelo menos 5% do valor do objeto (achádego)
+        </label>
+        <button type="submit" class="botao">Registrar objeto</button>
+      </form>
+    </section>
+
+    <!-- HISTÓRICO -->
+    <section id="historico" class="secao" hidden>
+      <h1 class="titulo-secao">Histórico do balcão</h1>
+      <p class="explica">Tudo o que aconteceu, na ordem. Nada deste registro pode ser apagado.</p>
+      <ol id="linha-do-tempo" class="linha-do-tempo"></ol>
+    </section>
+  </main>
+
+  <!-- DEVOLVER -->
+  <dialog id="dialogo-devolver" class="dialogo">
+    <form method="dialog" id="form-devolver">
+      <h2>Devolver ao dono</h2>
+      <p id="devolver-objeto" class="dialogo-objeto"></p>
+
+      <div id="devolver-sinais" class="sinais">
+        <strong>Detalhes que só o dono saberia</strong>
+        <p id="devolver-sinais-texto"></p>
+        <span>Pergunte à pessoa sem mostrar esta informação.</span>
+      </div>
+
+      <p id="devolver-exigencia" class="exigencia"></p>
+
+      <label>Nome de quem está retirando
+        <input name="reivindicante_nome" required minlength="2">
+      </label>
+      <label>Telefone ou e-mail
+        <input name="reivindicante_contato" required minlength="5">
+      </label>
+      <label>Documento conferido
+        <select name="tipo_documento_conferido">
+          <option value="NENHUM">Nenhum</option>
+          <option value="RG">RG</option>
+          <option value="CNH">CNH</option>
+          <option value="PASSAPORTE">Passaporte</option>
+          <option value="OUTRO">Outro</option>
+        </select>
+        <span class="dica">Registramos só o tipo. O número do documento nunca é guardado.</span>
+      </label>
+      <label>O que a pessoa descreveu
+        <textarea name="verificacao_resumo" rows="3" required
+          placeholder="Ex.: descreveu a capinha azul com adesivo de gato antes de ver o objeto"></textarea>
+      </label>
+      <label class="marcar">
+        <input type="checkbox" name="achadego_registrado">
+        A recompensa de quem encontrou foi combinada entre as partes
+      </label>
+      <p class="erro" id="devolver-erro" role="alert"></p>
+      <div class="acoes">
+        <button type="button" class="botao secundario" data-fechar>Cancelar</button>
+        <button type="submit" class="botao">Devolver ao dono</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ENTREGAR À AUTORIDADE -->
+  <dialog id="dialogo-autoridade" class="dialogo">
+    <form method="dialog" id="form-autoridade">
+      <h2>Entregar à autoridade</h2>
+      <p id="autoridade-objeto" class="dialogo-objeto"></p>
+      <p class="explica">Quando o dono não aparece em 15 dias, a lei manda entregar o objeto à autoridade competente (Código Civil, art. 1.233).</p>
+      <label>Para onde foi levado
+        <input name="orgao" required minlength="3" value="Delegacia de Polícia">
+      </label>
+      <label>Número do protocolo (se houver)
+        <input name="protocolo" maxlength="100">
+      </label>
+      <p class="erro" id="autoridade-erro" role="alert"></p>
+      <div class="acoes">
+        <button type="button" class="botao secundario" data-fechar>Cancelar</button>
+        <button type="submit" class="botao">Registrar entrega</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="aviso" class="aviso" role="status" aria-live="polite"></div>
+
+  <script src="painel.js"></script>
+</body>
+</html>

@@ -9,3 +9,8 @@ async def test_criar_instituicao_e_operadores(cliente, hub):
 async def test_instituicao_inexistente_da_404(cliente):
     r = await cliente.get("/instituicoes/00000000-0000-0000-0000-000000000000")
     assert r.status_code == 404
+
+
+async def test_listar_instituicoes(cliente, hub):
+    lista = (await cliente.get("/instituicoes")).json()
+    assert [i["nome"] for i in lista] == ["Shopping Teste"]

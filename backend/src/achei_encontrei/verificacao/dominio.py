@@ -45,11 +45,11 @@ def validar_verificacao(
     minimo = MINIMO_RESUMO_POR_RISCO[nivel_risco]
     if len(resumo.strip()) < minimo:
         raise RegraViolada(
-            f"Para objetos de risco {nivel_risco}, descreva com pelo menos {minimo} caracteres "
-            "o que a pessoa informou e o que foi conferido."
+            f"Descreva com mais detalhes o que a pessoa informou sobre o objeto "
+            f"(pelo menos {minimo} letras)."
         )
     if nivel_risco == NivelRisco.ALTO and tipo_documento == TipoDocumento.NENHUM:
         raise RegraViolada(
-            "Objetos de risco ALTO só podem ser devolvidos após conferência de um documento "
-            "de identificação do reivindicante."
+            "Para devolver um documento, confira antes um documento de identidade "
+            "de quem está retirando e indique qual foi."
         )

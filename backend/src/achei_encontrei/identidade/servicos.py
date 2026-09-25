@@ -15,6 +15,10 @@ async def criar_instituicao(sessao: AsyncSession, dados: InstituicaoCriar) -> In
     return instituicao
 
 
+async def listar_instituicoes(sessao: AsyncSession) -> list[Instituicao]:
+    return list((await sessao.scalars(select(Instituicao).order_by(Instituicao.nome))).all())
+
+
 async def obter_instituicao(sessao: AsyncSession, instituicao_id: uuid.UUID) -> Instituicao:
     instituicao = await sessao.get(Instituicao, instituicao_id)
     if instituicao is None:

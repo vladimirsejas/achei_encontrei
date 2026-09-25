@@ -20,6 +20,11 @@ async def criar_instituicao(dados: InstituicaoCriar, sessao: AsyncSession = Depe
     return await servicos.criar_instituicao(sessao, dados)
 
 
+@rotas.get("", response_model=list[InstituicaoLer])
+async def listar_instituicoes(sessao: AsyncSession = Depends(obter_sessao)):
+    return await servicos.listar_instituicoes(sessao)
+
+
 @rotas.get("/{instituicao_id}", response_model=InstituicaoLer)
 async def obter_instituicao(
     instituicao_id: uuid.UUID, sessao: AsyncSession = Depends(obter_sessao)

@@ -102,7 +102,8 @@ de entrada comercial do projeto.
 | Domínio definido (entidades, estados, eventos, regras jurídicas) | ✅ Concluído |
 | Revisão estratégica: começar pelo hub institucional | ✅ Concluído |
 | **Fase 1** — Balcão institucional: registro, custódia, prazo legal, devolução, auditoria, relatório | 🔨 Núcleo pronto (API + testes) |
-| **Fase 1** — Tela do balcão para demonstração | ⏳ Próximo passo |
+| **Fase 1** — Tela do balcão para demonstração | ✅ Pronta em http://localhost:8000 |
+| **Fase 1** — Login dos operadores | ⏳ Próximo passo |
 | **Fase 0** — Levar a demonstração a instituições reais e encontrar um piloto | ⏳ |
 | **Fase 2** — Ponte com o público: busca e formulário "Perdi" | ⏳ |
 | **Fase 3** — Inteligência: matching heurístico, depois IA | ⏳ |
@@ -136,7 +137,8 @@ achei_encontrei/
     │   ├── itens/                ← Achado, Custódia, Transferência, prazo, relatório
     │   ├── correspondencia/      ← Match (Fase 3)
     │   ├── verificacao/          ← Devolução e contestação
-    │   └── auditoria/            ← Eventos
+    │   ├── auditoria/            ← Eventos
+    │   └── painel/               ← a tela do balcão
     ├── migracoes/                ← histórico do banco (Alembic)
     ├── tests/                    ← espelha o src/
     └── scripts/popular_demo.py   ← cria um balcão de demonstração
@@ -170,7 +172,8 @@ uv run python scripts/popular_demo.py
 uv run uvicorn achei_encontrei.main:app --reload
 ```
 
-Abra **http://localhost:8000/docs** para ver e testar todas as rotas.
+Abra **http://localhost:8000** para usar a tela do balcão.
+Para programadores: **http://localhost:8000/docs** mostra e testa todas as rotas da API.
 
 O `.env.example` já vem no **modo rápido** (SQLite, sem Docker). Para usar
 PostgreSQL, troque a linha `DATABASE_URL` no `.env` e rode `docker compose up -d`

@@ -114,7 +114,7 @@ async def main() -> None:
     print(f"   Devolvidos:                 {rel.devolvidos}")
     print(f"   Alertas de prazo emitidos:  {alertas}")
     print(f"   Prazos vencidos sem destino: {rel.prazos_vencidos_sem_destino}")
-    print("\nAbra http://localhost:8000/docs e use os ids acima para explorar.")
+    print("\nSuba o servidor e abra http://localhost:8000 para ver o balcão.")
 
 
 if __name__ == "__main__":
